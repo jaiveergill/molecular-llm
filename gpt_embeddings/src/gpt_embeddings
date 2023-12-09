@@ -1,0 +1,77 @@
+import openai
+openai.key = 'Private Key'
+
+import pickle
+from google.colab import drive
+
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import DeepLake
+from langchain.document_loaders import TextLoader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA, ConversationalRetrievalChain
+from deeplake.core.vectorstore import VectorStore
+import os
+
+from sentence_transformers import SentenceTransformer
+
+bert_model = SentenceTransformer('recobo/chemical-bert-uncased')
+
+# Creates model using embeddings from dataset
+def create_qa(embedding_url='', df_url='', embedding_model='', embedding_function='', column='description', db_store_path='db', llm='gpt-3.5-turbo-16k', embeddings_finished=True):
+  import shutil
+  print(f"Loading df from {df_url}...")
+  df = pickle.load(open(f'drive/MyDrive/{df_url}', 'rb'))
+  print("df loaded...")
+
+  print("=" * 50)
+  print()
+  if embeddings_finished:
+    print("Embeddings pre-loaded")
+    print(f"Loading embeddings from {embedding_url}...")
+    embeddings = np.array(pickle.load(open(f'drive/MyDrive/{embedding_url}', 'rb')))
+    print("Embeddings loaded")
+  else:
+    print("Embeddings not pre-loaded")
+    print("Creating embeddings...")
+    embeddings = model.encode(df[column])
+    print("Embeddings created")
+
+  source_text = 'data.txt'
+
+  CHUNK_SIZE = 1000
+  chunked_text = [df[column][i] for i in range(len(df))]
+
+  print("=" * 50)
+  print()
+
+  print(f"Removing previous db from '{db_store_path}'")
+  shutil.rmtree(db_store_path, ignore_errors=True)
+
+  print(f"Creating VectorStore from {db_store_path}...")
+  vector_store = VectorStore(
+      path = db_store_path,
+  )
+
+  vector_store.add(text = chunked_text,
+                  embedding = embeddings,
+                  metadata = [{"source": source_text}]*len(chunked_text))
+
+
+  print()
+  print("=" * 50)
+  db = DeepLake(dataset_path=db_store_path, read_only=True, embedding_function=embedding_function)
+  print("Creating Retriever...")
+  retriever = db.as_retriever()
+  retriever.search_kwargs['distance_metric'] = 'cos'
+  retriever.search_kwargs['k'] = 20
+
+  print("=" * 50)
+  print()
+  print(f"Creating model as {llm}...")
+  model = ChatOpenAI(model=llm, openai_api_key=openai.key) # 'gpt-3.5-turbo',
+  qa = RetrievalQA.from_llm(model, retriever=retriever)
+  print("END")
+  print("=" * 50)
+  print()
+  return qa
