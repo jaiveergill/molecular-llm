@@ -31,7 +31,7 @@ The datasets used in this study are not included in this repository due to size 
 Contributions are welcome! If you have suggestions or improvements, please fork the repository and submit a pull request. Ensure your changes are well documented and tested.
 
 ## License
-For this project, a permissive license like the MIT License or the Apache 2.0 License would be suitable. These licenses are commonly used in open-source projects and allow others to freely use, modify, and distribute your work, sometimes with certain conditions.
+Distributed under the MIT License. See LICENSE for more information.
 
 ## Contact
 For any queries or collaborations, please contact Jaiveer Gill at jaiveer.gill26@bcp.org.
