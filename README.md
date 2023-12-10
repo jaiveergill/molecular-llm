@@ -31,7 +31,7 @@ The datasets used in this study are not included in this repository due to size 
 Contributions are welcome! If you have suggestions or improvements, please fork the repository and submit a pull request. Ensure your changes are well documented and tested.
 
 ## License
-Distributed under the MIT License. See LICENSE.txt for more information.
+Distributed under the MIT License. See LICENSE for more information.
 
 ## Contact
 For any queries or collaborations, please contact Jaiveer Gill at jaiveer.gill26@bcp.org.
