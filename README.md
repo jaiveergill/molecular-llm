@@ -7,8 +7,10 @@ This repository accompanies the paper "Unsupervised Learning of Molecular Embedd
 ## Contents
 - `gpt_embeddings`: Script for GPT model embeddings in molecular data.
 - `cluster_vis.py`: Visualization tool for chemical compound clusters.
-- `openai_model.py`: Implementation of OpenAI models for cheminformatics.
-- `openai_script.py`: Application of OpenAI's API for molecular embeddings.
+- `openai_embeddings.py`: Implementation of OpenAI models for embedding description data.
+- `evaluation.py`: Evaluation of GPT-3.5 with embeddings compared to GPT-3.5 base.
+- 'Augment Wiki Descs': Collection and Augmentation of Wiki Data used in Evaluation.ipynb
+- 'Evaluation.ipynb': Evaluation of GPT-3.5 model with embeddings
 - `Annotated Data.ipynb`: Notebook for data annotation processes.
 - `Data Collection.ipynb`: Notebook detailing the data collection process.
 - `Data Enhancement.ipynb`: Techniques for enhancing and augmenting data.
